@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>12 Pubs Route (Town) — Interactive Map</title>
+  <link rel="stylesheet" href="mystyle.css">
 
   <!-- Leaflet -->
   <link
@@ -18,90 +19,6 @@
     crossorigin=""
   ></script>
 
-  <style>
-    html, body, #map {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: #f6f7fb;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    }
-    .bubble {
-      background: white;
-      border-radius: 16px;
-      padding: 10px 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.12);
-      border: 1px solid rgba(0,0,0,.08);
-      max-width: 520px;
-    }
-    .bubble h1 {
-      font-size: 16px;
-      margin: 0 0 6px 0;
-    }
-    .bubble p {
-      font-size: 13px;
-      margin: 0;
-      color: #56606a;
-      line-height: 1.35;
-    }
-    .chip {
-      display: inline-block;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #efeaff;
-      color: #4a2bd6;
-      font-weight: 600;
-      margin-top: 8px;
-    }
-    .num-pin {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: white;
-      border: 3px solid #7c3aed;
-      color: #1f2937;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.20);
-    }
-    .num-pin.break { background: #efeaff; }
-    .toast {
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      top: 12px;
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .toast > div { pointer-events: auto; }
-    .btnrow {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-    button {
-      appearance: none;
-      border: 1px solid rgba(0,0,0,.12);
-      background: white;
-      padding: 8px 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 650;
-      font-size: 12px;
-    }
-    button.primary {
-      background: #7c3aed;
-      color: white;
-      border-color: #7c3aed;
-    }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-  </style>
 </head>
 <body>
   <div id="map"></div>
