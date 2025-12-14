@@ -121,54 +121,163 @@
   </div>
 
 <script>
-  const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
+  // const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
+  const STOPS = [
+    {
+      n: 1,
+      name: "The Wild Duck",
+      addr: "17–20 Sycamore St, Temple Bar, Dublin 2, Ireland",
+      note: "Kick-off spot. Lively, chatty, good ‘everyone meet here’ energy.",
+      website: "https://www.instagram.com/thewildduckdublin/",
+      photo: "" // no embed (use Photos button in popup)
+    },
+    {
+      n: 2,
+      name: "Tapped Late Bar & Kitchen",
+      addr: "Nassau St, Dublin 2, Ireland",
+      note: "Cozy-but-busy early stop. Handy for a quick cocktail + food base. Great atmosphere + good for groups. Solid early stop.",
+      website: "https://tappeddublin.com/",
+      photo: "https://YOUR_IMAGE_URL.jpg",
+      maps: "https://www.google.com/maps/search/?api=1&query=Tapped%20Late%20Bar%20%26%20Kitchen%20Dublin"
+    },
+    {
+      n: 3,
+      name: "Pygmalion",
+      addr: "59 William St S, Dublin 2, Ireland",
+      note: "Fun atmosphere + big beer garden vibes. Great momentum stop.",
+      website: "https://pyg.ie/",
+      photo: "https://pyg.ie/wp-content/uploads/2020/01/Pygmalion_logo.png"
+    },
+    {
+      n: 4,
+      name: "The Hairy Lemon",
+      addr: "41–42 Stephen St Lower, Dublin 2, Ireland",
+      note: "Quirky Dublin pub energy. Easy mid-route pint + laughs.",
+      website: "https://thehairylemon.ie/",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/c/cd/The_Hairy_Lemon_Pub_%28Lower_Stephen_Street_-_Dublin%29_%287339107158%29.jpg",
+      maps: ""
+    },
+    {
+      n: 5,
+      name: "The Bar With No Name",
+      addr: "Fade Street, Dublin 2, Ireland",
+      note: "Hidden-feel cocktail bar. Good ‘reset’ for chats before the next push.",
+      website: "https://www.noname.bar/",
+      photo: "", // no embed
+      maps: ""
+    },
+    {
+      n: 6,
+      name: "Café en Seine",
+      addr: "40 Dawson St, Dublin 2, Ireland",
+      note: "Big ‘wow’ interior. Perfect for group photos + fancy drinks.",
+      website: "https://cafeenseine.ie/",
+      photo: "",
+      maps: ""
+    },
+    {
+      n: 7,
+      name: "37 Dawson Street",
+      addr: "37 Dawson St, Dublin 2, Ireland",
+      note: "Stylish, good atmosphere, easy to actually talk (before the chaos).",
+      website: "https://37dawsonstreet.ie/",
+      photo: "",
+      maps: ""
+    },
+    {
+      n: 8,
+      name: "Flight Club Dublin",
+      addr: "Dawson St, Dublin 2, Ireland",
+      note: "Your break-point 😂 Darts games + loud energy + mayhem (not a nightclub).",
+      website: "https://flightclubdarts.com/ie/dublin/",
+      photo: "",
+      maps: ""
+    },
+    {
+      n: 9,
+      name: "Whelan’s",
+      addr: "25 Wexford St, Dublin 2, Ireland",
+      note: "Live-music vibe. Great for a singalong moment and proper craic.",
+      website: "https://www.whelanslive.com/",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/1/10/Whelan%27s_Bar_-_geograph.org.uk_-_4795032.jpg",
+      maps: ""
+    },
+    {
+      n: 10,
+      name: "The Camden",
+      addr: "84 Camden St Lower, Dublin 2, Ireland",
+      note: "High-energy bar atmosphere (dancey, but still a bar). Big group-friendly stop.",
+      website: "https://thecamden.ie/",
+      photo: "",
+      maps: ""
+    },
+    {
+      n: 11,
+      name: "Devitt’s Pub",
+      addr: "78 Camden St Lower, Dublin 2, Ireland",
+      note: "Solid pints + classic good atmosphere. Usually a handy late-route stop.",
+      website: "https://devittspub.ie/",
+      photo: "https://devittspub.ie/wp-content/uploads/2017/11/IMG_0096-480x640.jpg",
+      maps: ""
+    },
+    {
+      n: 12,
+      name: "The Bleeding Horse",
+      addr: "24–25 Camden St Upper, Dublin 2, Ireland",
+      note: "Finish line. Big classic pub, plenty of space to end the night properly.",
+      website: "https://bleedinghorse.ie/",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/c/c6/The_Bleeding_Horse%2C_Dublin_01.jpg",
+      maps: ""
+    }
+  ];
+
 
   // Map
   const map = L.map('map', { zoomControl: true });
 
   // --- User location (blue dot) ---
-let userMarker = null;
-let userCircle = null;
-let followUser = false;
+  let userMarker = null;
+  let userCircle = null;
+  let followUser = false;
 
-function updateUserLocation(e) {
-  const latlng = e.latlng;
-  const accuracy = e.accuracy || 0;
+  function updateUserLocation(e) {
+    const latlng = e.latlng;
+    const accuracy = e.accuracy || 0;
 
-  if (!userMarker) {
-    userMarker = L.circleMarker(latlng, {
-      radius: 8,
-      weight: 3,
-      color: "#1a73e8",
-      fillColor: "#1a73e8",
-      fillOpacity: 0.9
-    }).addTo(map);
+    if (!userMarker) {
+      userMarker = L.circleMarker(latlng, {
+        radius: 8,
+        weight: 3,
+        color: "#1a73e8",
+        fillColor: "#1a73e8",
+        fillOpacity: 0.9
+      }).addTo(map);
 
-    userCircle = L.circle(latlng, {
-      radius: accuracy,
-      weight: 1,
-      color: "#1a73e8",
-      fillColor: "#1a73e8",
-      fillOpacity: 0.15
-    }).addTo(map);
-  } else {
-    userMarker.setLatLng(latlng);
-    userCircle.setLatLng(latlng);
-    userCircle.setRadius(accuracy);
+      userCircle = L.circle(latlng, {
+        radius: accuracy,
+        weight: 1,
+        color: "#1a73e8",
+        fillColor: "#1a73e8",
+        fillOpacity: 0.15
+      }).addTo(map);
+    } else {
+      userMarker.setLatLng(latlng);
+      userCircle.setLatLng(latlng);
+      userCircle.setRadius(accuracy);
+    }
+
+    if (followUser) map.setView(latlng, Math.max(map.getZoom(), 16));
   }
 
-  if (followUser) map.setView(latlng, Math.max(map.getZoom(), 16));
-}
+  function onLocationError(err) {
+    console.warn(err);
+    alert("Couldn't get your location. Make sure location services are enabled and allow the browser permission.");
+  }
 
-function onLocationError(err) {
-  console.warn(err);
-  alert("Couldn't get your location. Make sure location services are enabled and allow the browser permission.");
-}
-
-// Start watching location (updates as you walk)
-map.locate({ watch: true, setView: false, enableHighAccuracy: true, maximumAge: 5000 });
-map.on("locationfound", updateUserLocation);
-map.on("locationerror", onLocationError);
+  // Start watching location (updates as you walk)
+  map.locate({ watch: true, setView: false, enableHighAccuracy: true, maximumAge: 5000 });
+  map.on("locationfound", updateUserLocation);
+  map.on("locationerror", onLocationError);
 
   map.setView([53.344, -6.261], 15);
 
@@ -238,7 +347,40 @@ map.on("locationerror", onLocationError);
 
         const isBreak = (s.n === 8);
         const m = L.marker([c.lat, c.lon], { icon: makeIcon(s.n, isBreak) });
-        m.bindPopup(`<b>${s.n}. ${s.name}</b><br/>${s.addr}${isBreak ? '<br/><span style="color:#7c3aed;font-weight:700;">(Break point)</span>' : ''}`);
+        const safe = (v) => (v ? String(v).replaceAll('"', "&quot;") : "");
+
+        const photoHtml = s.photo
+          ? `<img src="${safe(s.photo)}"
+                  style="width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin:8px 0"
+                  loading="lazy"
+                  onerror="this.style.display='none';" />`
+          : "";
+
+        const noteHtml = s.note
+          ? `<div style="margin-top:6px;color:#56606a;line-height:1.35">${safe(s.note)}</div>`
+          : "";
+
+        const buttonsHtml = `
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            ${s.maps ? `<a href="${safe(s.maps)}" target="_blank" rel="noopener"
+                        style="background:#7c3aed;color:#fff;padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
+                        Open in Google Maps</a>` : ""}
+            ${s.website ? `<a href="${safe(s.website)}" target="_blank" rel="noopener"
+                          style="background:#fff;color:#111;border:1px solid rgba(0,0,0,.15);padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
+                          Website</a>` : ""}
+          </div>
+        `;
+
+        m.bindPopup(`
+          <div style="max-width:320px">
+            <div style="font-weight:900;font-size:14px">${s.n}. ${safe(s.name)}</div>
+            <div style="color:#56606a;font-size:12px;margin-top:2px">${safe(s.addr)}</div>
+            ${photoHtml}
+            ${noteHtml}
+            ${buttonsHtml}
+          </div>
+        `);
+
         m.addTo(markersLayer);
 
         await new Promise(r => setTimeout(r, 350));
