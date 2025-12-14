@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>12 Pubs Route (Town) — Interactive Map</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <style>
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #f6f7fb;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .bubble {
+      background: white;
+      border-radius: 16px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.08);
+      max-width: 520px;
+    }
+    .bubble h1 {
+      font-size: 16px;
+      margin: 0 0 6px 0;
+    }
+    .bubble p {
+      font-size: 13px;
+      margin: 0;
+      color: #56606a;
+      line-height: 1.35;
+    }
+    .chip {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #efeaff;
+      color: #4a2bd6;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .num-pin {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: white;
+      border: 3px solid #7c3aed;
+      color: #1f2937;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.20);
+    }
+    .num-pin.break { background: #efeaff; }
+    .toast {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 12px;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .toast > div { pointer-events: auto; }
+    .btnrow {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      appearance: none;
+      border: 1px solid rgba(0,0,0,.12);
+      background: white;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 650;
+      font-size: 12px;
+    }
+    button.primary {
+      background: #7c3aed;
+      color: white;
+      border-color: #7c3aed;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="toast">
+    <div class="bubble" id="status">
+      <h1>12 Pubs Route (Town)</h1>
+      <p id="statusText">Loading pins + walking routes… (first load may take ~10–20 seconds)</p>
+      <div class="chip">Stop 8 (Flight Club) is the break point</div>
+      <div class="btnrow">
+        <button class="primary" id="fitBtn" disabled>Fit to route</button>
+        <button id="toggle1" disabled>Toggle Part 1</button>
+        <button id="toggle2" disabled>Toggle Part 2</button>
+        <button id="followBtn">Follow me</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
+
+  // Map
+  const map = L.map('map', { zoomControl: true });
+
+  // --- User location (blue dot) ---
+let userMarker = null;
+let userCircle = null;
+let followUser = false;
+
+function updateUserLocation(e) {
+  const latlng = e.latlng;
+  const accuracy = e.accuracy || 0;
+
+  if (!userMarker) {
+    userMarker = L.circleMarker(latlng, {
+      radius: 8,
+      weight: 3,
+      color: "#1a73e8",
+      fillColor: "#1a73e8",
+      fillOpacity: 0.9
+    }).addTo(map);
+
+    userCircle = L.circle(latlng, {
+      radius: accuracy,
+      weight: 1,
+      color: "#1a73e8",
+      fillColor: "#1a73e8",
+      fillOpacity: 0.15
+    }).addTo(map);
+  } else {
+    userMarker.setLatLng(latlng);
+    userCircle.setLatLng(latlng);
+    userCircle.setRadius(accuracy);
+  }
+
+  if (followUser) map.setView(latlng, Math.max(map.getZoom(), 16));
+}
+
+function onLocationError(err) {
+  console.warn(err);
+  alert("Couldn't get your location. Make sure location services are enabled and allow the browser permission.");
+}
+
+// Start watching location (updates as you walk)
+map.locate({ watch: true, setView: false, enableHighAccuracy: true, maximumAge: 5000 });
+map.on("locationfound", updateUserLocation);
+map.on("locationerror", onLocationError);
+
+  map.setView([53.344, -6.261], 15);
+
+  // Basemap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const statusText = document.getElementById('statusText');
+  const fitBtn = document.getElementById('fitBtn');
+  const toggle1 = document.getElementById('toggle1');
+  const toggle2 = document.getElementById('toggle2');
+  
+  const followBtn = document.getElementById('followBtn');
+  followBtn.onclick = () => {
+    followUser = !followUser;
+    followBtn.textContent = followUser ? "Following ✅" : "Follow me";
+  };
+
+
+  const markersLayer = L.layerGroup().addTo(map);
+  const route1Layer = L.geoJSON(null, { style: { color: '#7c3aed', weight: 6, opacity: 0.95 } }).addTo(map);
+  const route2Layer = L.geoJSON(null, { style: { color: '#7c3aed', weight: 6, opacity: 0.60, dashArray: '10 10' } }).addTo(map);
+
+  function makeIcon(n, isBreak) {
+    const cls = isBreak ? 'num-pin break' : 'num-pin';
+    return L.divIcon({
+      className: '',
+      html: `<div class="${cls}">${n}</div>`,
+      iconSize: [34, 34],
+      iconAnchor: [17, 17],
+      popupAnchor: [0, -18]
+    });
+  }
+
+  async function geocodeOne(query) {
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query);
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Geocoding failed: ' + res.status);
+    const data = await res.json();
+    if (!data || !data[0]) throw new Error('No result for: ' + query);
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+
+  async function routeOSRM(coords) {
+    const coordStr = coords.map(c => `${c.lon},${c.lat}`).join(';');
+    const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${coordStr}?overview=full&geometries=geojson&steps=false`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Routing failed: ' + res.status);
+    const json = await res.json();
+    if (!json.routes || !json.routes[0] || !json.routes[0].geometry) throw new Error('No route geometry');
+    return json.routes[0].geometry;
+  }
+
+  function setStatus(msg) { statusText.textContent = msg; }
+
+  (async () => {
+    try {
+      setStatus('Geocoding locations…');
+      const coords = [];
+
+      for (let i = 0; i < STOPS.length; i++) {
+        const s = STOPS[i];
+        const c = await geocodeOne(s.addr);
+        coords.push(c);
+
+        const isBreak = (s.n === 8);
+        const m = L.marker([c.lat, c.lon], { icon: makeIcon(s.n, isBreak) });
+        m.bindPopup(`<b>${s.n}. ${s.name}</b><br/>${s.addr}${isBreak ? '<br/><span style="color:#7c3aed;font-weight:700;">(Break point)</span>' : ''}`);
+        m.addTo(markersLayer);
+
+        await new Promise(r => setTimeout(r, 350));
+      }
+
+      setStatus('Building walking routes…');
+      const part1 = coords.slice(0, 8);
+      const part2 = coords.slice(7, 12); // start from stop 8
+
+      const geom1 = await routeOSRM(part1);
+      route1Layer.addData({ "type": "Feature", "geometry": geom1, "properties": { "name": "Part 1" } });
+
+      const geom2 = await routeOSRM(part2);
+      route2Layer.addData({ "type": "Feature", "geometry": geom2, "properties": { "name": "Part 2" } });
+
+      const allLatLngs = coords.map(c => L.latLng(c.lat, c.lon));
+      const bounds = L.latLngBounds(allLatLngs).pad(0.18);
+      map.fitBounds(bounds);
+
+      fitBtn.disabled = false;
+      toggle1.disabled = false;
+      toggle2.disabled = false;
+
+      fitBtn.onclick = () => map.fitBounds(bounds);
+      toggle1.onclick = () => (map.hasLayer(route1Layer) ? map.removeLayer(route1Layer) : route1Layer.addTo(map));
+      toggle2.onclick = () => (map.hasLayer(route2Layer) ? map.removeLayer(route2Layer) : route2Layer.addTo(map));
+
+      setStatus('Done ✅ Zoom in/out like Google Maps. Tap pins for details.');
+    } catch (e) {
+      console.error(e);
+      setStatus('Couldn’t load map routes: ' + (e.message || e));
+    }
+  })();
+</script>
+</body>
+</html>
