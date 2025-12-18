@@ -45,6 +45,7 @@
       name: "The Wild Duck",
       addr: "17-20 Sycamore St, Temple Bar, Dublin 2, Ireland",
       note: "Kick-off spot. Lively, chatty, good 'everyone meet here' energy.",
+      rule: "No First Names <br> No one can call each other by their first name. If someone slips up, they get a penalty drink.",
       website: "https://www.instagram.com/thewildduckdublin/",
       photos: [
         "images/WildDuck1.png",
@@ -58,6 +59,7 @@
       name: "Tapped Late Bar & Kitchen",
       addr: "Nassau St, Dublin 2, Ireland",
       note: "Cozy-but-busy early stop. Handy for a quick cocktail + food base. Great atmosphere + good for groups. Solid early stop.",
+      rule: "Opposite Hand Drinking <br> You must drink with your non-dominant hand in one of the pubs. If caught using the wrong hand, you owe a drink to someone.",
       website: "https://tappeddublin.com/",
       photos: [
         "images/tapped.png",
@@ -71,6 +73,7 @@
       name: "Pygmalion",
       addr: "59 William St S, Dublin 2, Ireland",
       note: "Fun atmosphere + big beer garden vibes. Great momentum stop.",
+      rule: "Silent Pub <br> One pub must be completed in total silence. No talking, just gestures. First person to talk faces a penalty!",
       website: "https://pyg.ie/",
       photos: [
         "images/Pygmalion1.png",
@@ -86,6 +89,7 @@
       name: "The Bar With No Name",
       addr: "Fade Street, Dublin 2, Ireland",
       note: "Hidden-feel cocktail bar. Good 'reset' for chats before the next push.",
+      rule: "Last One Done <br> Whoever finishes their drink last in this pub faces an extra challenge in the next pub (e.g., doing a shot, carrying someone's drink, etc.).",
       website: "https://www.noname.bar/",
       photos: [
         "images/BarNoName1.png",
@@ -99,6 +103,7 @@
       name: "The Hairy Lemon",
       addr: "41-42 Stephen St Lower, Dublin 2, Ireland",
       note: "Quirky Dublin pub energy. Easy mid-route pint + laughs.",
+      rule: "The Straw Rule <br> Everyone's drink must be consumed through a straw at one pub. Bonus points if it's a festive one!",
       website: "https://thehairylemon.ie/",
       photos: [
         "images/HairyLemon1.png",
@@ -113,7 +118,8 @@
       n: 6,
       name: "Café en Seine",
       addr: "40 Dawson St, Dublin 2, Ireland",
-      note: "Big ‘wow’ interior. Perfect for group photos + fancy drinks.",
+      note: "Big 'wow' interior. Perfect for group photos + fancy drinks.",
+      rule: "Stranger Sip <br> In one pub, you must get a stranger to take a drink with you. No leaving until you succeed!",
       website: "https://cafeenseine.ie/",
       photos: [
         "images/CaféenSeine1.png",
@@ -129,6 +135,7 @@
       name: "37 Dawson Street",
       addr: "37 Dawson St, Dublin 2, Ireland",
       note: "Stylish, good atmosphere, easy to actually talk (before the chaos).",
+      rule: "Jumper Swap <br> At this pub, everyone must swap Christmas jumpers with someone else in the group. No exceptions, no complaints!",
       website: "https://37dawsonstreet.ie/",
       photos: [
         "images/37DawsonStreet1.png",
@@ -140,8 +147,10 @@
     {
       n: 8,
       name: "Flight Club Dublin",
-      addr: "Dawson St, Dublin 2, Ireland",
+      // addr: "Dawson St, Dublin 2, Ireland",
+      addr: "35/36 Dawson St, Dublin, D02 CR29, Ireland", lat: 53.3406928, lon: -6.2584398,
       note: "Your break-point 😂 Darts games + loud energy + mayhem (not a nightclub).",
+      rule: "Switch Seats Rule <br> Everyone must swap seats randomly each time you take a drink during this pub. No one can sit where they started.",
       website: "https://flightclubdarts.com/ie/dublin/",
       photos: [
         "images/FlightClubDublin1.png",
@@ -155,6 +164,7 @@
       name: "Whelan's",
       addr: "25 Wexford St, Dublin 2, Ireland",
       note: "Live-music vibe. Great for a singalong moment and proper craic.",
+      rule: "Person to Your Left Picks <br> At one pub, the person to your left picks your drink. No complaints allowed!",
       website: "https://www.whelanslive.com/",
       photos: [
         "images/Whelans1.png",
@@ -168,6 +178,7 @@
       name: "The Camden",
       addr: "84 Camden St Lower, Dublin 2, Ireland",
       note: "High-energy bar atmosphere (dancey, but still a bar). Big group-friendly stop.",
+      rule: "No Swearing <br> Swearing is banned at this pub. Slip up, and you owe a penalty drink!",
       website: "https://thecamden.ie/",
       photos: [
         "images/Camden1.png",
@@ -181,6 +192,7 @@
       name: "Devitt's Pub",
       addr: "78 Camden St Lower, Dublin 2, Ireland",
       note: "Solid pints + classic good atmosphere. Usually a handy late-route stop.",
+      rule: "No Phones <br> Phones are banned in one pub. If you’re caught using your phone, you do a shot at the next place.",
       website: "https://devittspub.ie/",
       photos: [
         "images/Devitts1.png",
@@ -194,6 +206,7 @@
       name: "The Bleeding Horse",
       addr: "24-25 Camden St Upper, Dublin 2, Ireland",
       note: "Finish line. Big classic pub, plenty of space to end the night properly.",
+      rule: "Accents Only <br> For one pub, everyone must speak in an accent (e.g., American, Scottish, pirate). Break character? Take a drink!",
       website: "https://bleedinghorse.ie/",
       // photo: "https://upload.wikimedia.org/wikipedia/commons/c/c6/The_Bleeding_Horse%2C_Dublin_01.jpg",
       photos: [
@@ -347,6 +360,8 @@
           </div>
         `;
 
+        const ruleHtml = `<div class="pub-rule">Rule: ${safe(s.rule ?? "")}</div>`;
+
         // const safe = (v) => (v ? String(v).replaceAll('"', "&quot;") : "");
 
         const photos = Array.isArray(s.photos) ? s.photos : [];
@@ -371,6 +386,7 @@
             ${carouselHtml}
             ${s.desc ? `<div style="margin-top:6px;color:#56606a;font-size:12px;line-height:1.35">${safe(s.desc)}</div>` : ""}
             ${noteHtml}
+            ${ruleHtml}
             ${buttonsHtml}
           </div>
         `, { maxWidth: 340 });
