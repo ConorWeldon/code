@@ -23,19 +23,23 @@
 <body>
   <div id="map"></div>
 
-  <div class="toast">
-    <div class="bubble" id="status">
-      <h1>12 Pubs Route (Town)</h1>
-      <p id="statusText">Loading pins + walking routes… (first load may take ~10–20 seconds)</p>
-      <div class="chip">Stop 8 (Flight Club) is the break point</div>
-      <div class="btnrow">
-        <button class="primary" id="fitBtn" disabled>Fit to route</button>
-        <button id="toggle1" disabled>Toggle Part 1</button>
-        <button id="toggle2" disabled>Toggle Part 2</button>
-        <button id="followBtn">Follow me</button>
-      </div>
+  <div id="ui" class="ui open">
+  <button id="menuBtn" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="true">
+    <span class="menu-icon"></span>
+  </button>
+
+  <div class="bubble panel" id="status">
+    <h1>12 Pubs Route (Town)</h1>
+    <p id="statusText">Loading pins + walking routes… (first load may take ~10–20 seconds)</p>
+    <div class="chip">Stop 8 (Flight Club) is the break point</div>
+    <div class="btnrow">
+      <button class="primary" id="fitBtn" disabled>Fit to route</button>
+      <button id="toggle1" disabled>Toggle Part 1</button>
+      <button id="toggle2" disabled>Toggle Part 2</button>
+      <button id="followBtn">Follow me</button>
     </div>
   </div>
+</div>
 
 <script>
   // const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
@@ -287,6 +291,23 @@
     followBtn.textContent = followUser ? "Following ✅" : "Follow me";
   };
 
+  // --- Burger menu open/close ---
+const ui = document.getElementById("ui");
+const menuBtn = document.getElementById("menuBtn");
+
+function setMenu(open){
+  ui.classList.toggle("closed", !open);
+  ui.classList.toggle("open", open);
+  menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+// default: OPEN (like now)
+setMenu(true);
+
+menuBtn.addEventListener("click", () => {
+  const isOpen = !ui.classList.contains("closed");
+  setMenu(!isOpen);
+});
 
   const markersLayer = L.layerGroup().addTo(map);
   const route1Layer = L.geoJSON(null, { style: { color: '#7c3aed', weight: 6, opacity: 0.95 } }).addTo(map);
@@ -331,7 +352,7 @@
 
       for (let i = 0; i < STOPS.length; i++) {
         const s = STOPS[i];
-        const c = await geocodeOne(s.addr);
+        const c = (s.lat && s.lon) ? { lat: s.lat, lon: s.lon } : await geocodeOne(s.addr);
         coords.push(c);
 
         const isBreak = (s.n === 8);

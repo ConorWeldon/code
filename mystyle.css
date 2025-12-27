@@ -58,7 +58,7 @@ body,
     background: #efeaff;
 }
 
-.toast {
+/* .toast {
     position: absolute;
     left: 12px;
     right: 12px;
@@ -71,6 +71,68 @@ body,
 
 .toast>div {
     pointer-events: auto;
+} */
+
+/* --- Burger menu container (top-left) --- */
+.ui{
+  position: absolute;
+  top: 7%;
+  left: 12px;
+  z-index: 9999;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Square burger button */
+.menu-btn{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+/* Burger icon lines */
+.menu-btn::before,
+.menu-btn::after,
+.menu-btn .menu-icon{
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: #111827;
+  border-radius: 2px;
+}
+.menu-btn::before{ top: 14px; }
+.menu-btn .menu-icon{ top: 50%; transform: translateY(-50%); }
+.menu-btn::after{ bottom: 14px; }
+
+/* Panel show/hide */
+.panel{
+  max-width: 520px;
+  transition: transform .22s ease, opacity .22s ease;
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Closed state = slide panel away, leave button */
+.ui.closed .panel{
+  transform: translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Better on mobile */
+@media (max-width: 520px){
+  .panel{ max-width: calc(100vw - 80px); }
 }
 
 .btnrow {
