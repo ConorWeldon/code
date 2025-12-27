@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,23 +8,17 @@
   <link rel="stylesheet" href="mystyle.css">
 
   <!-- Leaflet -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 </head>
+
 <body>
   <div id="map"></div>
 
-  <div id="ui" class="ui open">
+  <!-- <div id="ui" class="ui open">
   <button id="menuBtn" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="true">
     <span class="menu-icon"></span>
   </button>
@@ -39,357 +34,750 @@
       <button id="followBtn">Follow me</button>
     </div>
   </div>
-</div>
+</div> -->
 
-<script>
-  // const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
-  const STOPS = [
-    {
-      n: 1,
-      name: "The Wild Duck",
-      addr: "17-20 Sycamore St, Temple Bar, Dublin 2, Ireland",
-      note: "Kick-off spot. Lively, chatty, good 'everyone meet here' energy.",
-      rule: "No First Names <br> No one can call each other by their first name. If someone slips up, they get a penalty drink.",
-      website: "https://www.instagram.com/thewildduckdublin/",
-      photos: [
-        "images/WildDuck1.png",
-        "images/WildDuck2.png",
-        "images/WildDuck3.png"
-      ],
-      maps: "https://maps.app.goo.gl/vpxH4MaMDLyBRaG58"
-    },
-    {
-      n: 2,
-      name: "Tapped Late Bar & Kitchen",
-      addr: "Nassau St, Dublin 2, Ireland",
-      note: "Cozy-but-busy early stop. Handy for a quick cocktail + food base. Great atmosphere + good for groups. Solid early stop.",
-      rule: "Opposite Hand Drinking <br> You must drink with your non-dominant hand in one of the pubs. If caught using the wrong hand, you owe a drink to someone.",
-      website: "https://tappeddublin.com/",
-      photos: [
-        "images/tapped.png",
-        "images/tapped2.png",
-        "images/tapped3.png"
-      ],
-      maps: "https://www.google.com/maps/search/?api=1&query=Tapped%20Late%20Bar%20%26%20Kitchen%20Dublin"
-    },
-    {
-      n: 3,
-      name: "Pygmalion",
-      addr: "59 William St S, Dublin 2, Ireland",
-      note: "Fun atmosphere + big beer garden vibes. Great momentum stop.",
-      rule: "Silent Pub <br> One pub must be completed in total silence. No talking, just gestures. First person to talk faces a penalty!",
-      website: "https://pyg.ie/",
-      photos: [
-        "images/Pygmalion1.png",
-        "images/Pygmalion2.png",
-        "images/Pygmalion3.png",
-        "images/Pygmalion4.png",
-        "images/Pygmalion5.png"
-      ],
-      maps: "https://maps.app.goo.gl/p9gv6ZGFDWWbC4mg6"
-    },
-    {
-      n: 4,
-      name: "The Bar With No Name",
-      addr: "Fade Street, Dublin 2, Ireland",
-      note: "Hidden-feel cocktail bar. Good 'reset' for chats before the next push.",
-      rule: "Last One Done <br> Whoever finishes their drink last in this pub faces an extra challenge in the next pub (e.g., doing a shot, carrying someone's drink, etc.).",
-      website: "https://www.noname.bar/",
-      photos: [
-        "images/BarNoName1.png",
-        "images/BarNoName2.png",
-        "images/BarNoName3.png"
-      ],
-      maps: "https://maps.app.goo.gl/wFXWCXAuqYAPKgRi9"
-    },
-    {
-      n: 5,
-      name: "The Hairy Lemon",
-      addr: "41-42 Stephen St Lower, Dublin 2, Ireland",
-      note: "Quirky Dublin pub energy. Easy mid-route pint + laughs.",
-      rule: "The Straw Rule <br> Everyone's drink must be consumed through a straw at one pub. Bonus points if it's a festive one!",
-      website: "https://thehairylemon.ie/",
-      photos: [
-        "images/HairyLemon1.png",
-        "images/HairyLemon2.png",
-        "images/HairyLemon3.png",
-        "images/HairyLemon4.png"
-      ],
-      maps: "https://maps.app.goo.gl/epKEbP7duajogBue8"
-    },
-    
-    {
-      n: 6,
-      name: "Café en Seine",
-      addr: "40 Dawson St, Dublin 2, Ireland",
-      note: "Big 'wow' interior. Perfect for group photos + fancy drinks.",
-      rule: "Stranger Sip <br> In one pub, you must get a stranger to take a drink with you. No leaving until you succeed!",
-      website: "https://cafeenseine.ie/",
-      photos: [
-        "images/CaféenSeine1.png",
-        "images/CaféenSeine2.png",
-        "images/CaféenSeine3.png",
-        "images/CaféenSeine4.png",
-        "images/CaféenSeine5.png",
-      ],
-      maps: "https://maps.app.goo.gl/hNGjWT3hVAEbEQM49"
-    },
-    {
-      n: 7,
-      name: "37 Dawson Street",
-      addr: "37 Dawson St, Dublin 2, Ireland",
-      note: "Stylish, good atmosphere, easy to actually talk (before the chaos).",
-      rule: "Jumper Swap <br> At this pub, everyone must swap Christmas jumpers with someone else in the group. No exceptions, no complaints!",
-      website: "https://37dawsonstreet.ie/",
-      photos: [
-        "images/37DawsonStreet1.png",
-        "images/37DawsonStreet2.png",
-        "images/37DawsonStreet3.png",
-      ],
-      maps: "https://maps.app.goo.gl/rWzrjD6bBiYK67Jc6"
-    },
-    {
-      n: 8,
-      name: "Flight Club Dublin",
-      // addr: "Dawson St, Dublin 2, Ireland",
-      addr: "35/36 Dawson St, Dublin, D02 CR29, Ireland", lat: 53.3406928, lon: -6.2584398,
-      note: "Your break-point 😂 Darts games + loud energy + mayhem (not a nightclub).",
-      rule: "Switch Seats Rule <br> Everyone must swap seats randomly each time you take a drink during this pub. No one can sit where they started.",
-      website: "https://flightclubdarts.com/ie/dublin/",
-      photos: [
-        "images/FlightClubDublin1.png",
-        "images/FlightClubDublin2.png",
-        "images/FlightClubDublin3.png",
-      ],
-      maps: "https://maps.app.goo.gl/u3iaKEtQstMNCapU9"
-    },
-    {
-      n: 9,
-      name: "Whelan's",
-      addr: "25 Wexford St, Dublin 2, Ireland",
-      note: "Live-music vibe. Great for a singalong moment and proper craic.",
-      rule: "Person to Your Left Picks <br> At one pub, the person to your left picks your drink. No complaints allowed!",
-      website: "https://www.whelanslive.com/",
-      photos: [
-        "images/Whelans1.png",
-        "images/Whelans2.png",
-        "images/Whelans3.png",
-      ],
-      maps: "https://maps.app.goo.gl/EgzjzWUBpC8RWDH17"
-    },
-    {
-      n: 10,
-      name: "The Camden",
-      addr: "84 Camden St Lower, Dublin 2, Ireland",
-      note: "High-energy bar atmosphere (dancey, but still a bar). Big group-friendly stop.",
-      rule: "No Swearing <br> Swearing is banned at this pub. Slip up, and you owe a penalty drink!",
-      website: "https://thecamden.ie/",
-      photos: [
-        "images/Camden1.png",
-        "images/Camden2.png",
-        "images/Camden3.png",
-      ],
-      maps: "https://maps.app.goo.gl/WFDUvLjJ7UQBwfq69"
-    },
-    {
-      n: 11,
-      name: "Devitt's Pub",
-      addr: "78 Camden St Lower, Dublin 2, Ireland",
-      note: "Solid pints + classic good atmosphere. Usually a handy late-route stop.",
-      rule: "No Phones <br> Phones are banned in one pub. If you’re caught using your phone, you do a shot at the next place.",
-      website: "https://devittspub.ie/",
-      photos: [
-        "images/Devitts1.png",
-        "images/Devitts2.png",
-        "images/Devitts3.png",
-      ],
-      maps: "https://maps.app.goo.gl/bdWfP7tvc1dugzgq5"
-    },
-    {
-      n: 12,
-      name: "The Bleeding Horse",
-      addr: "24-25 Camden St Upper, Dublin 2, Ireland",
-      note: "Finish line. Big classic pub, plenty of space to end the night properly.",
-      rule: "Accents Only <br> For one pub, everyone must speak in an accent (e.g., American, Scottish, pirate). Break character? Take a drink!",
-      website: "https://bleedinghorse.ie/",
-      // photo: "https://upload.wikimedia.org/wikipedia/commons/c/c6/The_Bleeding_Horse%2C_Dublin_01.jpg",
-      photos: [
-        "images/TheBleedingHorse1.png",
-        "images/TheBleedingHorse2.png",
-        "images/TheBleedingHorse3.png",
-        "images/TheBleedingHorse4.png",
-        "images/TheBleedingHorse5.png",
-      ],
-      maps: "https://maps.app.goo.gl/t95EkoQH2ttWrWYy7"
+  <div id="ui" class="ui open">
+    <div class="ui-left">
+      <button id="menuBtn" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="true">
+        <span class="menu-icon"></span>
+      </button>
+
+      <button id="langBtn" class="menu-btn lang-btn" type="button" aria-label="Language" aria-expanded="false">
+        🌐
+      </button>
+
+      <div id="langMenu" class="lang-menu hidden">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ja">日本語</button>
+        <button type="button" data-lang="ko">한국어</button>
+        <button type="button" data-lang="ga">Gaeilge</button>
+      </div>
+    </div>
+
+    <div class="bubble panel" id="status">
+      <h1 id="titleText">12 Pubs Route (Town)</h1>
+      <p id="statusText">Loading pins + walking routes… (first load may take ~10–20 seconds)</p>
+      <div class="chip" id="chipText">Stop 8 (Flight Club) is the break point</div>
+
+      <div class="btnrow">
+        <button class="primary" id="fitBtn" disabled>Fit to route</button>
+        <button id="toggle1" disabled>Toggle Part 1</button>
+        <button id="toggle2" disabled>Toggle Part 2</button>
+        <button id="followBtn">Follow me</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // const STOPS = [{ n: 1, name: "The Wild Duck", addr: "The Wild Duck, Sycamore Street, Dublin 2, Ireland" }, { n: 2, name: "Tapped Late Bar & Kitchen", addr: "47 Nassau St, Dublin D02 RP20, Ireland" }, {"n": 3, "name": "Pygmalion", "addr": "Pygmalion, 59 South William Street, Dublin 2, Ireland"}, {"n": 4, "name": "The Hairy Lemon", "addr": "The Hairy Lemon, Stephen Street Lower, Dublin 2, Ireland"}, {"n": 5, "name": "Bar With No Name", "addr": "Bar With No Name, 3 Fade Street, Dublin 2, Ireland"}, {"n": 6, "name": "Café en Seine", "addr": "Café en Seine, 40 Dawson Street, Dublin 2, Ireland"}, {"n": 7, "name": "37 Dawson Street", "addr": "37 Dawson Street, 37 Dawson Street, Dublin 2, Ireland"}, { n: 8, name: "Flight Club Dublin", addr: "35-36 Dawson Street, Dublin, Ireland" }, {"n": 9, "name": "Whelan's", "addr": "Whelan's, 25 Wexford Street, Dublin 2, Ireland"}, {"n": 10, "name": "The Camden", "addr": "The Camden, 84 Camden Street Lower, Dublin 2, Ireland"}, {"n": 11, "name": "Devitt's Pub", "addr": "Devitt's Pub, 78 Camden Street Lower, Dublin 2, Ireland"}, {"n": 12, "name": "The Bleeding Horse", "addr": "The Bleeding Horse, 24-25 Camden Street Upper, Dublin 2, Ireland"}];
+    const STOPS = [{
+        n: 1,
+        name: "The Wild Duck",
+        addr: "17-20 Sycamore St, Temple Bar, Dublin 2, Ireland",
+        note: "Kick-off spot. Lively, chatty, good 'everyone meet here' energy.",
+        rule: "No First Names <br> No one can call each other by their first name. If someone slips up, they get a penalty drink.",
+        website: "https://www.instagram.com/thewildduckdublin/",
+        photos: [
+          "images/WildDuck1.png",
+          "images/WildDuck2.png",
+          "images/WildDuck3.png"
+        ],
+        maps: "https://maps.app.goo.gl/vpxH4MaMDLyBRaG58",
+        i18n: {
+          ja: {
+            note: "スタート地点。にぎやかで話しやすい、集合場所にぴったりの雰囲気。",
+            rule: "ファーストネーム禁止<br>ファーストネームで呼ぶのは禁止。誰かが言ったらペナルティドリンク。"
+          },
+          ko: {
+            note: "출발 지점. 활기차고 분위기 좋아서 ‘여기서 모이자’ 하기 딱 좋아요.",
+            rule: "이름 부르기 금지<br>서로 이름(퍼스트네임) 부르면 안 됨. 실수하면 벌칙 술!"
+          },
+          ga: {
+            note: "An tús. Fuinniúil agus sóisialta—foirfe mar áit chruinnithe don ghrúpa.",
+            rule: "Gan Céadanmneacha<br>Ná glaoigh ar éinne lena chéadainm. Má theipeann ort, pionós deoch!"
+          }
+        }
+      },
+      {
+        n: 2,
+        name: "Tapped Late Bar & Kitchen",
+        addr: "Nassau St, Dublin 2, Ireland",
+        note: "Cozy-but-busy early stop. Handy for a quick cocktail + food base. Great atmosphere + good for groups. Solid early stop.",
+        rule: "Opposite Hand Drinking <br> You must drink with your non-dominant hand in one of the pubs. If caught using the wrong hand, you owe a drink to someone.",
+        website: "https://tappeddublin.com/",
+        photos: [
+          "images/tapped.png",
+          "images/tapped2.png",
+          "images/tapped3.png"
+        ],
+        maps: "https://www.google.com/maps/search/?api=1&query=Tapped%20Late%20Bar%20%26%20Kitchen%20Dublin",
+        i18n: {
+          ja: {
+            note: "序盤にちょうどいい、ほどよく混む居心地の良いお店。軽く一杯＋軽食にも◎。",
+            rule: "逆の手で飲む<br>どこか1軒は利き手じゃない方で飲む。間違えたら誰かに1杯おごり。"
+          },
+          ko: {
+            note: "초반에 가기 좋은 아늑한 곳. 한잔 + 안주/음식으로 베이스 깔기 좋아요.",
+            rule: "반대손으로 마시기<br>한 펍에서는 비주손으로만 마시기. 들키면 누군가에게 한잔!"
+          },
+          ga: {
+            note: "Stop luath compordach. Oiriúnach do dheoch thapa agus greim bia—maith don ghrúpa.",
+            rule: "Ól leis an Lámh Eile<br>I dtábhairne amháin, ól leis an lámh neamhcheannasach. Má fhaightear thú, caithfidh tú deoch a cheannach do dhuine."
+          }
+        }
+      },
+      {
+        n: 3,
+        name: "Pygmalion",
+        addr: "59 William St S, Dublin 2, Ireland",
+        note: "Fun atmosphere + big beer garden vibes. Great momentum stop.",
+        rule: "Silent Pub <br> One pub must be completed in total silence. No talking, just gestures. First person to talk faces a penalty!",
+        website: "https://pyg.ie/",
+        photos: [
+          "images/Pygmalion1.png",
+          "images/Pygmalion2.png",
+          "images/Pygmalion3.png",
+          "images/Pygmalion4.png",
+          "images/Pygmalion5.png"
+        ],
+        maps: "https://maps.app.goo.gl/p9gv6ZGFDWWbC4mg6",
+        i18n: {
+          ja: {
+            note: "楽しい雰囲気＋ビアガーデン感。テンポが上がる勢いのある一軒。",
+            rule: "サイレントパブ<br>どこか1軒は完全に無言で。しゃべった人はペナルティ！"
+          },
+          ko: {
+            note: "분위기 좋고 비어가든 느낌. 기세 올리기 좋은 스팟.",
+            rule: "무음 펍<br>한 펍은 완전 침묵. 말한 사람이 벌칙!"
+          },
+          ga: {
+            note: "Atmaisféar spraíúil agus vibes gairdín beorach. Stop maith chun móiminteam a thógáil.",
+            rule: "Tábhairne Ciúin<br>I dtábhairne amháin, bíodh sé i dtost iomlán. An chéad duine a labhraíonn—pionós!"
+          }
+        }
+      },
+      {
+        n: 4,
+        name: "The Bar With No Name",
+        addr: "Fade Street, Dublin 2, Ireland",
+        note: "Hidden-feel cocktail bar. Good 'reset' for chats before the next push.",
+        rule: "Last One Done <br> Whoever finishes their drink last in this pub faces an extra challenge in the next pub (e.g., doing a shot, carrying someone's drink, etc.).",
+        website: "https://www.noname.bar/",
+        photos: [
+          "images/BarNoName1.png",
+          "images/BarNoName2.png",
+          "images/BarNoName3.png"
+        ],
+        maps: "https://maps.app.goo.gl/wFXWCXAuqYAPKgRi9",
+        i18n: {
+          ja: {
+            note: "隠れ家っぽいカクテルバー。次に備えて落ち着いて話せる“リセット”枠。",
+            rule: "最後に飲み終えた人<br>この店で最後に飲み終えた人は、次の店で追加チャレンジ。"
+          },
+          ko: {
+            note: "숨은 느낌의 칵테일 바. 다음 라운드 전에 분위기 리셋하기 좋아요.",
+            rule: "마지막으로 다 마신 사람<br>여기서 가장 늦게 끝낸 사람은 다음 펍에서 추가 미션!"
+          },
+          ga: {
+            note: "Beár mhanglaim le vibe ‘rúnda’. Deas mar stad athshocraithe roimh an gcéad chéim eile.",
+            rule: "An Duine Deireanach<br>An té a chríochnaíonn a dheoch deireanach anseo—faigheann dúshlán breise sa chéad tábhairne eile."
+          }
+        }
+      },
+      {
+        n: 5,
+        name: "The Hairy Lemon",
+        addr: "41-42 Stephen St Lower, Dublin 2, Ireland",
+        note: "Quirky Dublin pub energy. Easy mid-route pint + laughs.",
+        rule: "The Straw Rule <br> Everyone's drink must be consumed through a straw at one pub. Bonus points if it's a festive one!",
+        website: "https://thehairylemon.ie/",
+        photos: [
+          "images/HairyLemon1.png",
+          "images/HairyLemon2.png",
+          "images/HairyLemon3.png",
+          "images/HairyLemon4.png"
+        ],
+        maps: "https://maps.app.goo.gl/epKEbP7duajogBue8",
+        i18n: {
+          ja: {
+            note: "ちょっとクセになるダブリンっぽさ。中盤の一杯にちょうどいい。",
+            rule: "ストロー縛り<br>どこか1軒は全員ストローで飲む。クリスマスっぽいストローなら加点！"
+          },
+          ko: {
+            note: "특유의 더블린 감성. 중간에 한잔하고 웃기 좋은 곳.",
+            rule: "빨대 규칙<br>한 펍에서는 전원 빨대로만 마시기. 크리스마스 빨대면 보너스!"
+          },
+          ga: {
+            note: "Fíor-Dhubhlinneach agus greannmhar. Stop lár-rúit le pionta agus gáire.",
+            rule: "Riail an Tuí<br>I dtábhairne amháin, óltar gach deoch trí thuí. Bónas má tá ceann féile!"
+          }
+        }
+      },
+
+      {
+        n: 6,
+        name: "Café en Seine",
+        addr: "40 Dawson St, Dublin 2, Ireland",
+        note: "Big 'wow' interior. Perfect for group photos + fancy drinks.",
+        rule: "Stranger Sip <br> In one pub, you must get a stranger to take a drink with you. No leaving until you succeed!",
+        website: "https://cafeenseine.ie/",
+        photos: [
+          "images/CaféenSeine1.png",
+          "images/CaféenSeine2.png",
+          "images/CaféenSeine3.png",
+          "images/CaféenSeine4.png",
+          "images/CaféenSeine5.png",
+        ],
+        maps: "https://maps.app.goo.gl/hNGjWT3hVAEbEQM49",
+        i18n: {
+          ja: {
+            note: "内装が“わぁ”ってなる。写真にも最高、ちょっとオシャレに飲める。",
+            rule: "ストレンジャー・シップ<br>どこか1軒で知らない人に一緒に一口飲んでもらう。成功するまで出られない！"
+          },
+          ko: {
+            note: "인테리어가 ‘와’ 소리 나오는 곳. 단체 사진 + 분위기 있게 마시기 좋아요.",
+            rule: "낯선 사람 한 모금<br>한 펍에서 낯선 사람에게 같이 한 모금 마셔달라고 하기. 성공 전엔 못 나감!"
+          },
+          ga: {
+            note: "Taobh istigh ‘wow’. Foirfe do ghrianghraif ghrúpa agus deochanna galánta.",
+            rule: "Sip le Strainséir<br>I dtábhairne amháin, faigh strainséir le sip a ghlacadh leat. Ní fhágann sibh go dtí go n-éireoidh libh!"
+          }
+        }
+      },
+      {
+        n: 7,
+        name: "37 Dawson Street",
+        addr: "37 Dawson St, Dublin 2, Ireland",
+        note: "Stylish, good atmosphere, easy to actually talk (before the chaos).",
+        rule: "Jumper Swap <br> At this pub, everyone must swap Christmas jumpers with someone else in the group. No exceptions, no complaints!",
+        website: "https://37dawsonstreet.ie/",
+        photos: [
+          "images/37DawsonStreet1.png",
+          "images/37DawsonStreet2.png",
+          "images/37DawsonStreet3.png",
+        ],
+        maps: "https://maps.app.goo.gl/rWzrjD6bBiYK67Jc6",
+        i18n: {
+          ja: {
+            note: "おしゃれで雰囲気良し。騒がしくなりすぎず、ちゃんと話せる系。",
+            rule: "ジャンパー交換<br>ここでは全員クリスマスジャンパーを誰かと交換。例外なし！"
+          },
+          ko: {
+            note: "세련되고 분위기 좋아요. 너무 시끄럽지 않아 대화도 가능한 편.",
+            rule: "크리스마스 스웨터 교환<br>여기서는 전원 스웨터를 서로 바꿔 입기. 예외 없음!"
+          },
+          ga: {
+            note: "Stíleáil agus atmaisféar deas—áit mhaith le comhrá sula dtéann an oíche as smacht.",
+            rule: "Malartú Geansaí<br>Sa tábhairne seo, caithfidh gach duine geansaí Nollag a mhalartú le duine eile. Gan eisceacht!"
+          }
+        }
+      },
+      {
+        n: 8,
+        name: "Flight Club Dublin",
+        // addr: "Dawson St, Dublin 2, Ireland",
+        addr: "35/36 Dawson St, Dublin, D02 CR29, Ireland",
+        lat: 53.3406928,
+        lon: -6.2584398,
+        note: "Your break-point 😂 Darts games + loud energy + mayhem (not a nightclub).",
+        rule: "Switch Seats Rule <br> Everyone must swap seats randomly each time you take a drink during this pub. No one can sit where they started.",
+        website: "https://flightclubdarts.com/ie/dublin/",
+        photos: [
+          "images/FlightClubDublin1.png",
+          "images/FlightClubDublin2.png",
+          "images/FlightClubDublin3.png",
+        ],
+        maps: "https://maps.app.goo.gl/u3iaKEtQstMNCapU9",
+        i18n: {
+          ja: {
+            note: "休憩ポイント😂 ダーツ＋賑やか＋カオス（クラブじゃなくてバー寄り）。",
+            rule: "席シャッフル<br>この店では飲むたびにランダムに席替え。最初の席には戻れない。"
+          },
+          ko: {
+            note: "휴식 포인트 😂 다트 + 시끌벅적 + 난장(클럽 말고 바 느낌).",
+            rule: "자리 바꾸기<br>여기서는 마실 때마다 랜덤으로 자리 교체. 처음 앉은 자리에 못 앉음!"
+          },
+          ga: {
+            note: "Pointe sosa 😂 Cluichí dairteanna agus fuinneamh ard—beagán craiceáilte (ach ní club oíche).",
+            rule: "Riail an Mhalartaithe Suíochán<br>Gach uair a ólann tú, malartaigh suíocháin go randamach. Ní féidir fanacht sa chéad áit a bhí agat."
+          }
+        }
+      },
+      {
+        n: 9,
+        name: "Whelan's",
+        addr: "25 Wexford St, Dublin 2, Ireland",
+        note: "Live-music vibe. Great for a singalong moment and proper craic.",
+        rule: "Person to Your Left Picks <br> At one pub, the person to your left picks your drink. No complaints allowed!",
+        website: "https://www.whelanslive.com/",
+        photos: [
+          "images/Whelans1.png",
+          "images/Whelans2.png",
+          "images/Whelans3.png",
+        ],
+        maps: "https://maps.app.goo.gl/EgzjzWUBpC8RWDH17",
+        i18n: {
+          ja: {
+            note: "ライブ音楽っぽい雰囲気。歌いたくなる“いい感じ”の一軒。",
+            rule: "左の人が決める<br>どこか1軒で、左隣の人があなたの飲み物を選ぶ。文句なし！"
+          },
+          ko: {
+            note: "라이브 음악 분위기. 다 같이 따라 부르기 좋은 스팟.",
+            rule: "왼쪽 사람이 고르기<br>한 펍에서는 왼쪽 사람이 네 음료를 선택. 불평 금지!"
+          },
+          ga: {
+            note: "Vibe ceoil bheo. Stop iontach le hamhrán agus craic.",
+            rule: "An Duine Ar Chlé a Roghnaíonn<br>I dtábhairne amháin, roghnaíonn an duine ar do chlé do dheoch. Gan gearáin!"
+          }
+        }
+      },
+      {
+        n: 10,
+        name: "The Camden",
+        addr: "84 Camden St Lower, Dublin 2, Ireland",
+        note: "High-energy bar atmosphere (dancey, but still a bar). Big group-friendly stop.",
+        rule: "No Swearing <br> Swearing is banned at this pub. Slip up, and you owe a penalty drink!",
+        website: "https://thecamden.ie/",
+        photos: [
+          "images/Camden1.png",
+          "images/Camden2.png",
+          "images/Camden3.png",
+        ],
+        maps: "https://maps.app.goo.gl/WFDUvLjJ7UQBwfq69",
+        i18n: {
+          ja: {
+            note: "エネルギー高めでグループ向き。踊れるけど“バー”のテンション。",
+            rule: "悪口/汚い言葉禁止<br>ここでは罵り言葉（スウェア）禁止。言ったらペナルティドリンク！"
+          },
+          ko: {
+            note: "에너지 높은 바. 단체로 가기 좋고 분위기 업되는 곳.",
+            rule: "욕 금지<br>여기서는 욕설 금지. 실수하면 벌칙 술!"
+          },
+          ga: {
+            note: "Fuinneamh ard agus oiriúnach do ghrúpaí. Beár ‘beagnach damhsa’ ach fós beár.",
+            rule: "Gan Mionnú<br>Tá mionnú toirmiscthe anseo. Má tharlaíonn sé—pionós deoch!"
+          }
+        }
+      },
+      {
+        n: 11,
+        name: "Devitt's Pub",
+        addr: "78 Camden St Lower, Dublin 2, Ireland",
+        note: "Solid pints + classic good atmosphere. Usually a handy late-route stop.",
+        rule: "No Phones <br> Phones are banned in one pub. If you’re caught using your phone, you do a shot at the next place.",
+        website: "https://devittspub.ie/",
+        photos: [
+          "images/Devitts1.png",
+          "images/Devitts2.png",
+          "images/Devitts3.png",
+        ],
+        maps: "https://maps.app.goo.gl/bdWfP7tvc1dugzgq5",
+        i18n: {
+          ja: {
+            note: "定番の良いパイント＋雰囲気。終盤にちょうどいい安定枠。",
+            rule: "スマホ禁止<br>どこか1軒はスマホ禁止。触ってたら次の店でショット。"
+          },
+          ko: {
+            note: "클래식한 펍 분위기 + 괜찮은 맥주. 후반에 안정적으로 가기 좋아요.",
+            rule: "휴대폰 금지<br>한 펍에서는 휴대폰 사용 금지. 들키면 다음 펍에서 샷!"
+          },
+          ga: {
+            note: "Piontaí maithe agus atmaisféar clasaiceach. Stop áisiúil go déanach sa rúit.",
+            rule: "Gan Fóin<br>I dtábhairne amháin, tá fóin toirmiscthe. Má fhaightear thú ag úsáid fón—shot sa chéad áit eile."
+          }
+        }
+      },
+      {
+        n: 12,
+        name: "The Bleeding Horse",
+        addr: "24-25 Camden St Upper, Dublin 2, Ireland",
+        note: "Finish line. Big classic pub, plenty of space to end the night properly.",
+        rule: "Accents Only <br> For one pub, everyone must speak in an accent (e.g., American, Scottish, pirate). Break character? Take a drink!",
+        website: "https://bleedinghorse.ie/",
+        // photo: "https://upload.wikimedia.org/wikipedia/commons/c/c6/The_Bleeding_Horse%2C_Dublin_01.jpg",
+        photos: [
+          "images/TheBleedingHorse1.png",
+          "images/TheBleedingHorse2.png",
+          "images/TheBleedingHorse3.png",
+          "images/TheBleedingHorse4.png",
+          "images/TheBleedingHorse5.png",
+        ],
+        maps: "https://maps.app.goo.gl/t95EkoQH2ttWrWYy7",
+        i18n: {
+          ja: {
+            note: "ゴール！広めのクラシックパブで締めにぴったり。",
+            rule: "アクセント縛り<br>どこか1軒は全員アクセントで話す（例：アメリカ、スコットランド、海賊）。崩れたら一口。"
+          },
+          ko: {
+            note: "골인 지점! 넓고 클래식한 펍이라 마무리하기 딱 좋아요.",
+            rule: "억양/사투리로만 말하기<br>한 펍에서는 전원 억양(미국, 스코틀랜드, 해적 등)으로만 말하기. 깨지면 한잔!"
+          },
+          ga: {
+            note: "An líne chríochnaithe. Tábhairne clasaiceach mór—go leor spáis chun an oíche a chríochnú i gceart.",
+            rule: "Accents Amháin<br>I dtábhairne amháin, labhair gach duine le blas/accaint (m.sh. Meiriceánach, Albanach, bradach). Má bhriseann tú carachtar—glac deoch!"
+          }
+        }
+      }
+    ];
+
+    let currentLang = localStorage.getItem("lang") || "en";
+
+    const I18N = {
+      en: {
+        title: "12 Pubs Route (Town)",
+        chip: "Stop 8 (Flight Club) is the break point",
+        loading: "Loading pins + walking routes… (first load may take ~10–20 seconds)",
+        geocoding: "Geocoding locations…",
+        routing: "Building walking routes…",
+        done: "Done ✅ Zoom in/out like Google Maps. Tap pins for details.",
+        fit: "Fit to route",
+        t1: "Toggle Part 1",
+        t2: "Toggle Part 2",
+        follow: "Follow me",
+        following: "Following ✅",
+        rulePrefix: "Rule:",
+        openMaps: "Open in Google Maps",
+        website: "Website"
+      },
+      ja: {
+        title: "12パブはしごルート（市内）",
+        chip: "8番（Flight Club）が休憩ポイント",
+        loading: "ピンと徒歩ルートを読み込み中…（初回は10〜20秒ほどかかる場合があります）",
+        geocoding: "場所を検索中…",
+        routing: "徒歩ルートを作成中…",
+        done: "完了 ✅ ズームして、ピンをタップすると詳細が見られます。",
+        fit: "ルートに合わせる",
+        t1: "パート1 切替",
+        t2: "パート2 切替",
+        follow: "現在地を追跡",
+        following: "追跡中 ✅",
+        rulePrefix: "ルール:",
+        openMaps: "Googleマップで開く",
+        website: "ウェブサイト"
+      },
+      ko: {
+        title: "12펍 루트(도심)",
+        chip: "8번(Flight Club)이 휴식 포인트",
+        loading: "핀과 도보 경로를 불러오는 중…(처음에는 10~20초 걸릴 수 있어요)",
+        geocoding: "장소를 찾는 중…",
+        routing: "도보 경로를 만드는 중…",
+        done: "완료 ✅ 확대/축소하고 핀을 눌러 자세히 보세요.",
+        fit: "경로에 맞추기",
+        t1: "1부 토글",
+        t2: "2부 토글",
+        follow: "내 위치 따라가기",
+        following: "추적 중 ✅",
+        rulePrefix: "규칙:",
+        openMaps: "Google 지도에서 열기",
+        website: "웹사이트"
+      },
+      ga: {
+        title: "Bealach 12 dTábhairne (Lár na Cathrach)",
+        chip: "Is é Stad 8 (Flight Club) an pointe sosa",
+        loading: "Bioráin agus bealaí siúil á luchtú… (10–20 soicind uaireanta ar an gcéad uair)",
+        geocoding: "Suíomhanna á ngeochódú…",
+        routing: "Bealaí siúil á gcruthú…",
+        done: "Déanta ✅ Zúmáil isteach/amach agus tapáil na bioráin le sonraí a fheiceáil.",
+        fit: "Feistigh ar an mbealach",
+        t1: "Cuid 1 a thaispeáint/a cheilt",
+        t2: "Cuid 2 a thaispeáint/a cheilt",
+        follow: "Lean mo shuíomh",
+        following: "Ag leanúint ✅",
+        rulePrefix: "Riail:",
+        openMaps: "Oscail i Google Maps",
+        website: "Suíomh Gréasáin"
+      }
+    };
+
+    function t(key) {
+      return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
     }
-  ];
 
-
-  // Map
-  const map = L.map('map', { zoomControl: true });
-
-  // --- User location (blue dot) ---
-  let userMarker = null;
-  let userCircle = null;
-  let followUser = false;
-
-  function updateUserLocation(e) {
-    const latlng = e.latlng;
-    const accuracy = e.accuracy || 0;
-
-    if (!userMarker) {
-      userMarker = L.circleMarker(latlng, {
-        radius: 8,
-        weight: 3,
-        color: "#1a73e8",
-        fillColor: "#1a73e8",
-        fillOpacity: 0.9
-      }).addTo(map);
-
-      userCircle = L.circle(latlng, {
-        radius: accuracy,
-        weight: 1,
-        color: "#1a73e8",
-        fillColor: "#1a73e8",
-        fillOpacity: 0.15
-      }).addTo(map);
-    } else {
-      userMarker.setLatLng(latlng);
-      userCircle.setLatLng(latlng);
-      userCircle.setRadius(accuracy);
+    // Optional per-pub translations:
+    // s.i18n = { ja:{note:"", rule:""}, ko:{...}, ga:{...} }
+    function getStopText(s, field) {
+      if (s.i18n && s.i18n[currentLang] && s.i18n[currentLang][field]) return s.i18n[currentLang][field];
+      return s[field] || "";
     }
 
-    if (followUser) map.setView(latlng, Math.max(map.getZoom(), 16));
-  }
+    let lastStatusKey = "loading";
 
-  function onLocationError(err) {
-    console.warn(err);
-    alert("Couldn't get your location. Make sure location services are enabled and allow the browser permission.");
-  }
+    function setStatusKey(key) {
+      lastStatusKey = key;
+      statusText.textContent = t(key);
+    }
 
-  // Start watching location (updates as you walk)
-  map.locate({ watch: true, setView: false, enableHighAccuracy: true, maximumAge: 5000 });
-  map.on("locationfound", updateUserLocation);
-  map.on("locationerror", onLocationError);
+    function applyLanguage() {
+      document.getElementById("titleText").textContent = t("title");
+      document.getElementById("chipText").textContent = t("chip");
+      fitBtn.textContent = t("fit");
+      toggle1.textContent = t("t1");
+      toggle2.textContent = t("t2");
+      followBtn.textContent = followUser? t("following") : t("follow");
+      statusText.textContent = t(lastStatusKey);
+    }
 
-  map.setView([53.344, -6.261], 15);
 
-  // Basemap
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  const statusText = document.getElementById('statusText');
-  const fitBtn = document.getElementById('fitBtn');
-  const toggle1 = document.getElementById('toggle1');
-  const toggle2 = document.getElementById('toggle2');
-  
-  const followBtn = document.getElementById('followBtn');
-  followBtn.onclick = () => {
-    followUser = !followUser;
-    followBtn.textContent = followUser ? "Following ✅" : "Follow me";
-  };
-
-  // --- Burger menu open/close ---
-const ui = document.getElementById("ui");
-const menuBtn = document.getElementById("menuBtn");
-
-function setMenu(open){
-  ui.classList.toggle("closed", !open);
-  ui.classList.toggle("open", open);
-  menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
-}
-
-// default: OPEN (like now)
-setMenu(true);
-
-menuBtn.addEventListener("click", () => {
-  const isOpen = !ui.classList.contains("closed");
-  setMenu(!isOpen);
-});
-
-  const markersLayer = L.layerGroup().addTo(map);
-  const route1Layer = L.geoJSON(null, { style: { color: '#7c3aed', weight: 6, opacity: 0.95 } }).addTo(map);
-  const route2Layer = L.geoJSON(null, { style: { color: '#7c3aed', weight: 6, opacity: 0.60, dashArray: '10 10' } }).addTo(map);
-
-  function makeIcon(n, isBreak) {
-    const cls = isBreak ? 'num-pin break' : 'num-pin';
-    return L.divIcon({
-      className: '',
-      html: `<div class="${cls}">${n}</div>`,
-      iconSize: [34, 34],
-      iconAnchor: [17, 17],
-      popupAnchor: [0, -18]
+    // Map
+    const map = L.map('map', {
+      zoomControl: true
     });
-  }
 
-  async function geocodeOne(query) {
-    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query);
-    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('Geocoding failed: ' + res.status);
-    const data = await res.json();
-    if (!data || !data[0]) throw new Error('No result for: ' + query);
-    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
-  }
+    // --- User location (blue dot) ---
+    let userMarker = null;
+    let userCircle = null;
+    let followUser = false;
 
-  async function routeOSRM(coords) {
-    const coordStr = coords.map(c => `${c.lon},${c.lat}`).join(';');
-    const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${coordStr}?overview=full&geometries=geojson&steps=false`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Routing failed: ' + res.status);
-    const json = await res.json();
-    if (!json.routes || !json.routes[0] || !json.routes[0].geometry) throw new Error('No route geometry');
-    return json.routes[0].geometry;
-  }
+    function updateUserLocation(e) {
+      const latlng = e.latlng;
+      const accuracy = e.accuracy || 0;
 
-  function setStatus(msg) { statusText.textContent = msg; }
+      if (!userMarker) {
+        userMarker = L.circleMarker(latlng, {
+          radius: 8,
+          weight: 3,
+          color: "#1a73e8",
+          fillColor: "#1a73e8",
+          fillOpacity: 0.9
+        }).addTo(map);
 
-  (async () => {
-    try {
-      setStatus('Geocoding locations…');
-      const coords = [];
+        userCircle = L.circle(latlng, {
+          radius: accuracy,
+          weight: 1,
+          color: "#1a73e8",
+          fillColor: "#1a73e8",
+          fillOpacity: 0.15
+        }).addTo(map);
+      } else {
+        userMarker.setLatLng(latlng);
+        userCircle.setLatLng(latlng);
+        userCircle.setRadius(accuracy);
+      }
 
-      for (let i = 0; i < STOPS.length; i++) {
-        const s = STOPS[i];
-        const c = (s.lat && s.lon) ? { lat: s.lat, lon: s.lon } : await geocodeOne(s.addr);
-        coords.push(c);
+      if (followUser) map.setView(latlng, Math.max(map.getZoom(), 16));
+    }
 
-        const isBreak = (s.n === 8);
-        const m = L.marker([c.lat, c.lon], { icon: makeIcon(s.n, isBreak) });
-        const safe = (v) => (v ? String(v).replaceAll('"', "&quot;") : "");
+    function onLocationError(err) {
+      console.warn(err);
+      alert("Couldn't get your location. Make sure location services are enabled and allow the browser permission.");
+    }
 
-        const photoHtml = s.photo
-          ? `<img src="${safe(s.photo)}"
+    // Start watching location (updates as you walk)
+    map.locate({
+      watch: true,
+      setView: false,
+      enableHighAccuracy: true,
+      maximumAge: 5000
+    });
+    map.on("locationfound", updateUserLocation);
+    map.on("locationerror", onLocationError);
+
+    map.setView([53.344, -6.261], 15);
+
+    // Basemap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const statusText = document.getElementById('statusText');
+    const fitBtn = document.getElementById('fitBtn');
+    const toggle1 = document.getElementById('toggle1');
+    const toggle2 = document.getElementById('toggle2');
+
+    const followBtn = document.getElementById('followBtn');
+    followBtn.onclick = () => {
+      followUser = !followUser;
+      followBtn.textContent = followUser? t("following") : t("follow");
+    };
+
+    applyLanguage();
+    setStatusKey("loading");
+
+    // --- Burger menu open/close ---
+    const ui = document.getElementById("ui");
+    const menuBtn = document.getElementById("menuBtn");
+
+    function setMenu(open) {
+      ui.classList.toggle("closed", !open);
+      ui.classList.toggle("open", open);
+      menuBtn.setAttribute("aria-expanded", open? "true" : "false");
+    }
+
+    // default: OPEN (like now)
+    setMenu(true);
+
+    menuBtn.addEventListener("click", () => {
+      const isOpen = !ui.classList.contains("closed");
+      setMenu(!isOpen);
+    });
+
+    const markersLayer = L.layerGroup().addTo(map);
+    const route1Layer = L.geoJSON(null, {
+      style: {
+        color: '#7c3aed',
+        weight: 6,
+        opacity: 0.95
+      }
+    }).addTo(map);
+    const route2Layer = L.geoJSON(null, {
+      style: {
+        color: '#7c3aed',
+        weight: 6,
+        opacity: 0.60,
+        dashArray: '10 10'
+      }
+    }).addTo(map);
+
+    function makeIcon(n, isBreak) {
+      const cls = isBreak? 'num-pin break' : 'num-pin';
+      return L.divIcon({
+        className: '',
+        html: `<div class="${cls}">${n}</div>`,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -18]
+      });
+    }
+
+    async function geocodeOne(query) {
+      const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query);
+      const res = await fetch(url, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      if (!res.ok) throw new Error('Geocoding failed: ' + res.status);
+      const data = await res.json();
+      if (!data || !data[0]) throw new Error('No result for: ' + query);
+      return {
+        lat: parseFloat(data[0].lat),
+        lon: parseFloat(data[0].lon)
+      };
+    }
+
+    async function routeOSRM(coords) {
+      const coordStr = coords.map(c => `${c.lon},${c.lat}`).join(';');
+      const url =
+        `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${coordStr}?overview=full&geometries=geojson&steps=false`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Routing failed: ' + res.status);
+      const json = await res.json();
+      if (!json.routes || !json.routes[0] || !json.routes[0].geometry) throw new Error('No route geometry');
+      return json.routes[0].geometry;
+    }
+
+    function setStatus(msg) {
+      statusText.textContent = msg;
+    }
+
+    (async () => {
+      try {
+        setStatusKey("geocoding");
+        const coords = [];
+
+        function popupHtmlForStop(s) {
+          const safe = (v) => (v ? String(v).replaceAll('"', "&quot;") : "");
+
+          const noteText = getStopText(s, "note");
+          const ruleText = getStopText(s, "rule");
+
+          const photos = Array.isArray(s.photos) ? s.photos : [];
+          const dotsHtml = photos.map((_, i) => `<span class="dot" data-idx="${i}"></span>`).join("");
+
+          const carouselHtml = photos.length ? `
+            <div class="carousel" data-stop="${s.n}">
+              <button class="car-btn prev" type="button" data-dir="-1">‹</button>
+              <img class="car-img" src="${safe(photos[0])}" loading="lazy" onerror="this.style.display='none';" />
+              <button class="car-btn next" type="button" data-dir="1">›</button>
+              <div class="car-dots">${dotsHtml}</div>
+            </div>
+          ` : "";
+
+          const noteHtml = noteText
+            ? `<div style="margin-top:6px;color:#56606a;line-height:1.35">${safe(noteText)}</div>`
+            : "";
+
+          const ruleHtml = `<div class="pub-rule">${t("rulePrefix")} ${safe(ruleText || "")}</div>`;
+
+          const buttonsHtml = `
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+              ${s.maps ? `<a href="${safe(s.maps)}" target="_blank" rel="noopener"
+                style="background:#7c3aed;color:#fff;padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
+                ${t("openMaps")}</a>` : ""}
+              ${s.website ? `<a href="${safe(s.website)}" target="_blank" rel="noopener"
+                style="background:#fff;color:#111;border:1px solid rgba(0,0,0,.15);padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
+                ${t("website")}</a>` : ""}
+            </div>
+          `;
+
+          return `
+            <div style="max-width:320px">
+              <div style="font-weight:900;font-size:14px">${s.n}. ${safe(s.name)}</div>
+              <div style="color:#56606a;font-size:12px;margin-top:2px">${safe(s.addr)}</div>
+              ${carouselHtml}
+              ${noteHtml}
+              ${ruleHtml}
+              ${buttonsHtml}
+            </div>
+          `;
+        }
+
+        for (let i = 0; i < STOPS.length; i++) {
+          const s = STOPS[i];
+          const c = (s.lat && s.lon)? {
+            lat: s.lat,
+            lon: s.lon
+          } : await geocodeOne(s.addr);
+          coords.push(c);
+
+          const isBreak = (s.n === 8);
+          const m = L.marker([c.lat, c.lon], {
+            icon: makeIcon(s.n, isBreak)
+          });
+          const safe = (v) => (v? String(v).replaceAll('"', "&quot;") : "");
+
+          const photoHtml = s.photo?
+            `<img src="${safe(s.photo)}"
                   style="width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin:8px 0"
                   loading="lazy"
-                  onerror="this.style.display='none';" />`
-          : "";
+                  onerror="this.style.display='none';" />` :
+            "";
 
-        const noteHtml = s.note
-          ? `<div style="margin-top:6px;color:#56606a;line-height:1.35">${safe(s.note)}</div>`
-          : "";
+          // const noteHtml = s.note
+          //  ? `<div style="margin-top:6px;color:#56606a;line-height:1.35">${safe(s.note)}</div>`
+          //   : "";
 
-        const buttonsHtml = `
+          const buttonsHtml = `
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            ${s.maps ? `<a href="${safe(s.maps)}" target="_blank" rel="noopener"
+            ${s.maps? `<a href="${safe(s.maps)}" target="_blank" rel="noopener"
                         style="background:#7c3aed;color:#fff;padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
-                        Open in Google Maps</a>` : ""}
-            ${s.website ? `<a href="${safe(s.website)}" target="_blank" rel="noopener"
+                        ${t("openMaps")}</a>` : ""}
+            ${s.website? `<a href="${safe(s.website)}" target="_blank" rel="noopener"
                           style="background:#fff;color:#111;border:1px solid rgba(0,0,0,.15);padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:12px">
-                          Website</a>` : ""}
+                          ${t("website")}</a>` : ""}
           </div>
         `;
 
-        const ruleHtml = `<div class="pub-rule">Rule: ${safe(s.rule ?? "")}</div>`;
+          // const ruleHtml = `<div class="pub-rule">Rule: ${safe(s.rule?? "")}</div>`;
 
-        // const safe = (v) => (v ? String(v).replaceAll('"', "&quot;") : "");
+          const noteText = getStopText(s, "note");
+          const ruleText = getStopText(s, "rule");
 
-        const photos = Array.isArray(s.photos) ? s.photos : [];
-        const dotsHtml = photos.map((_, i) => `<span class="dot" data-idx="${i}"></span>`).join("");
+          const noteHtml = noteText?
+            `<div style="margin-top:6px;color:#56606a;line-height:1.35">${safe(noteText)}</div>` :
+            "";
 
-        const carouselHtml = photos.length
-          ? `
+          const ruleHtml = `<div class="pub-rule">${t("rulePrefix")} ${safe(ruleText?? "")}</div>`;
+
+
+          // const safe = (v) => (v? String(v).replaceAll('"', "&quot;") : "");
+
+          const photos = Array.isArray(s.photos)? s.photos : [];
+          const dotsHtml = photos.map((_, i) => `<span class="dot" data-idx="${i}"></span>`).join("");
+
+          const carouselHtml = photos.length?
+            `
             <div class="carousel" data-stop="${s.n}">
               <button class="car-btn prev" type="button" data-dir="-1">‹</button>
               <img class="car-img" src="${safe(photos[0])}" loading="lazy"
@@ -397,117 +785,169 @@ menuBtn.addEventListener("click", () => {
               <button class="car-btn next" type="button" data-dir="1">›</button>
               <div class="car-dots">${dotsHtml}</div>
             </div>
-          `
-          : "";
+          ` :
+            "";
 
-        m.bindPopup(`
-          <div style="max-width:320px">
-            <div style="font-weight:900;font-size:14px">${s.n}. ${safe(s.name)}</div>
-            <div style="color:#56606a;font-size:12px;margin-top:2px">${safe(s.addr)}</div>
-            ${carouselHtml}
-            ${s.desc ? `<div style="margin-top:6px;color:#56606a;font-size:12px;line-height:1.35">${safe(s.desc)}</div>` : ""}
-            ${noteHtml}
-            ${ruleHtml}
-            ${buttonsHtml}
-          </div>
-        `, { maxWidth: 340 });
+          m.bindPopup(() => popupHtmlForStop(s), { maxWidth: 340 });
 
-
-        // m.bindPopup(`
+        //   m.bindPopup(() => popupHtmlForStop(s), { maxWidth: 340 });
         //   <div style="max-width:320px">
         //     <div style="font-weight:900;font-size:14px">${s.n}. ${safe(s.name)}</div>
         //     <div style="color:#56606a;font-size:12px;margin-top:2px">${safe(s.addr)}</div>
-        //     ${photoHtml}
+        //     ${carouselHtml}
+        //     ${s.desc? `<div style="margin-top:6px;color:#56606a;font-size:12px;line-height:1.35">${safe(s.desc)}</div>` : ""}
         //     ${noteHtml}
+        //     ${ruleHtml}
         //     ${buttonsHtml}
         //   </div>
-        // `);
+        // `, {
+        //     maxWidth: 340
+        //   });
 
-        m.addTo(markersLayer);
+          // m.bindPopup(`
+          //   <div style="max-width:320px">
+          //     <div style="font-weight:900;font-size:14px">${s.n}. ${safe(s.name)}</div>
+          //     <div style="color:#56606a;font-size:12px;margin-top:2px">${safe(s.addr)}</div>
+          //     ${photoHtml}
+          //     ${noteHtml}
+          //     ${buttonsHtml}
+          //   </div>
+          // `);
 
-        await new Promise(r => setTimeout(r, 350));
+          m.addTo(markersLayer);
+
+          await new Promise(r => setTimeout(r, 350));
+        }
+
+        setStatusKey("routing");
+        const part1 = coords.slice(0, 8);
+        const part2 = coords.slice(7, 12); // start from stop 8
+
+        const geom1 = await routeOSRM(part1);
+        route1Layer.addData({
+          "type": "Feature",
+          "geometry": geom1,
+          "properties": {
+            "name": "Part 1"
+          }
+        });
+
+        const geom2 = await routeOSRM(part2);
+        route2Layer.addData({
+          "type": "Feature",
+          "geometry": geom2,
+          "properties": {
+            "name": "Part 2"
+          }
+        });
+
+        const allLatLngs = coords.map(c => L.latLng(c.lat, c.lon));
+        const bounds = L.latLngBounds(allLatLngs).pad(0.18);
+        map.fitBounds(bounds);
+
+        fitBtn.disabled = false;
+        toggle1.disabled = false;
+        toggle2.disabled = false;
+
+        fitBtn.onclick = () => map.fitBounds(bounds);
+        toggle1.onclick = () => (map.hasLayer(route1Layer)? map.removeLayer(route1Layer) : route1Layer.addTo(map));
+        toggle2.onclick = () => (map.hasLayer(route2Layer)? map.removeLayer(route2Layer) : route2Layer.addTo(map));
+
+        applyLanguage();
+
+        setStatusKey("done");
+      } catch (e) {
+        console.error(e);
+        setStatus('Couldn’t load map routes: ' + (e.message || e));
       }
+    })();
 
-      setStatus('Building walking routes…');
-      const part1 = coords.slice(0, 8);
-      const part2 = coords.slice(7, 12); // start from stop 8
+    const langBtn = document.getElementById("langBtn");
+    const langMenu = document.getElementById("langMenu");
 
-      const geom1 = await routeOSRM(part1);
-      route1Layer.addData({ "type": "Feature", "geometry": geom1, "properties": { "name": "Part 1" } });
+    langBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isHidden = langMenu.classList.toggle("hidden");
+      langBtn.setAttribute("aria-expanded", isHidden? "false" : "true");
+    });
 
-      const geom2 = await routeOSRM(part2);
-      route2Layer.addData({ "type": "Feature", "geometry": geom2, "properties": { "name": "Part 2" } });
-
-      const allLatLngs = coords.map(c => L.latLng(c.lat, c.lon));
-      const bounds = L.latLngBounds(allLatLngs).pad(0.18);
-      map.fitBounds(bounds);
-
-      fitBtn.disabled = false;
-      toggle1.disabled = false;
-      toggle2.disabled = false;
-
-      fitBtn.onclick = () => map.fitBounds(bounds);
-      toggle1.onclick = () => (map.hasLayer(route1Layer) ? map.removeLayer(route1Layer) : route1Layer.addTo(map));
-      toggle2.onclick = () => (map.hasLayer(route2Layer) ? map.removeLayer(route2Layer) : route2Layer.addTo(map));
-
-      setStatus('Done ✅ Zoom in/out like Google Maps. Tap pins for details.');
-    } catch (e) {
-      console.error(e);
-      setStatus('Couldn’t load map routes: ' + (e.message || e));
-    }
-  })();
-
-  const STOP_BY_N = Object.fromEntries(STOPS.map(x => [x.n, x]));
-const carState = {}; // stopNumber -> currentIndex
-
-function renderCarousel(rootEl, stopN) {
-  const stop = STOP_BY_N[stopN];
-  if (!stop || !stop.photos?.length) return;
-
-  const idx = carState[stopN] ?? 0;
-  const img = rootEl.querySelector(".car-img");
-  const dots = [...rootEl.querySelectorAll(".dot")];
-
-  if (img) img.src = stop.photos[idx];
-  dots.forEach((d, i) => d.classList.toggle("active", i === idx));
-}
-
-map.on("popupopen", (e) => {
-  const popupEl = e.popup.getElement();
-  const car = popupEl?.querySelector(".carousel");
-  if (!car) return;
-
-  const stopN = Number(car.dataset.stop);
-  const stop = STOP_BY_N[stopN];
-  if (!stop?.photos?.length) return;
-
-  carState[stopN] ??= 0;
-
-  // bind once per popup DOM
-  if (car.dataset.bound !== "1") {
-    car.addEventListener("click", (ev) => {
-      const btn = ev.target.closest(".car-btn");
-      const dot = ev.target.closest(".dot");
-
-      if (btn) {
-        const dir = Number(btn.dataset.dir);
-        const len = stop.photos.length;
-        carState[stopN] = (carState[stopN] + dir + len) % len;
-        renderCarousel(popupEl, stopN);
-      }
-
-      if (dot) {
-        carState[stopN] = Number(dot.dataset.idx);
-        renderCarousel(popupEl, stopN);
+    document.addEventListener("click", (e) => {
+      if (!langMenu.contains(e.target) && e.target !== langBtn) {
+        langMenu.classList.add("hidden");
+        langBtn.setAttribute("aria-expanded", "false");
       }
     });
 
-    car.dataset.bound = "1";
-  }
+    langMenu.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-lang]");
+      if (!b) return;
 
-  renderCarousel(popupEl, stopN);
-});
+      currentLang = b.dataset.lang;
+      localStorage.setItem("lang", currentLang);
 
-</script>
+      langMenu.classList.add("hidden");
+      langBtn.setAttribute("aria-expanded", "false");
+
+      const wasOpenPopup = map._popup;           // current open popup (if any)
+      const source = wasOpenPopup?._source;     // marker that owns it
+
+      map.closePopup();
+      applyLanguage();
+
+      if (source) source.openPopup();            // reopen → popupHtmlForStop runs again
+    });
+
+
+    const STOP_BY_N = Object.fromEntries(STOPS.map(x => [x.n, x]));
+    const carState = {}; // stopNumber -> currentIndex
+
+    function renderCarousel(rootEl, stopN) {
+      const stop = STOP_BY_N[stopN];
+      if (!stop || !stop.photos?.length) return;
+
+      const idx = carState[stopN] ?? 0;
+      const img = rootEl.querySelector(".car-img");
+      const dots = [...rootEl.querySelectorAll(".dot")];
+
+      if (img) img.src = stop.photos[idx];
+      dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+    }
+
+    map.on("popupopen", (e) => {
+      const popupEl = e.popup.getElement();
+      const car = popupEl?.querySelector(".carousel");
+      if (!car) return;
+
+      const stopN = Number(car.dataset.stop);
+      const stop = STOP_BY_N[stopN];
+      if (!stop?.photos?.length) return;
+
+      carState[stopN]??= 0;
+
+      // bind once per popup DOM
+      if (car.dataset.bound !== "1") {
+        car.addEventListener("click", (ev) => {
+          const btn = ev.target.closest(".car-btn");
+          const dot = ev.target.closest(".dot");
+
+          if (btn) {
+            const dir = Number(btn.dataset.dir);
+            const len = stop.photos.length;
+            carState[stopN] = (carState[stopN] + dir + len) % len;
+            renderCarousel(popupEl, stopN);
+          }
+
+          if (dot) {
+            carState[stopN] = Number(dot.dataset.idx);
+            renderCarousel(popupEl, stopN);
+          }
+        });
+
+        car.dataset.bound = "1";
+      }
+
+      renderCarousel(popupEl, stopN);
+    });
+  </script>
 </body>
 </html>
