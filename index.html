@@ -46,6 +46,10 @@
         🌐
       </button>
 
+      <button id="galleryBtn" class="menu-btn gallery-btn" type="button" aria-label="Photos">
+        📸
+      </button>
+
       <div id="langMenu" class="lang-menu hidden">
         <button type="button" data-lang="en">English</button>
         <button type="button" data-lang="ja">日本語</button>
@@ -864,6 +868,11 @@
 
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
+
+    const galleryBtn = document.getElementById("galleryBtn");
+    galleryBtn.addEventListener("click", () => {
+      window.location.href = "gallery.html";
+    });
 
     langBtn.addEventListener("click", (e) => {
       e.stopPropagation();

@@ -235,3 +235,42 @@ button:disabled {
 .car-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
 .dot{width:7px;height:7px;border-radius:999px;background:#cbd5e1;cursor:pointer}
 .dot.active{background:#7c3aed}
+
+/* Left column for stacked buttons */
+.ui-left{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+/* Language dropdown */
+.lang-menu{
+  position: absolute;
+  left: 54px;       /* opens to the right of the buttons */
+  top: 54px;        /* aligned to the language button row */
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 10000;
+  min-width: 160px;
+}
+
+.lang-menu button{
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 10px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.lang-menu button:hover{
+  background: rgba(124,58,237,.10);
+}
+
+.hidden{ display:none; }
+
