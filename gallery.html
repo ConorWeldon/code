@@ -81,8 +81,67 @@
       white-space: nowrap;
     }
 
-    /* Frame area */
+    /* Frame area (photo clipped, frame can overflow) */
+    .pub-card{ overflow: visible; }            /* allow frame to spill outside card */
+    .pub-head{ position: relative; z-index: 10; }  /* keep title above any overflow */
+
     .frame{
+    position: relative;
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+
+    /* control how much the frame "overflows" + scales */
+    --frameBleed: 24px;   /* how far it can extend outside the box */
+    --frameScale: 0.95;   /* how much to zoom the frame image */
+    }
+
+    .frame .clip{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;                  /* ✅ photo is clipped to the box */
+    background: #f1f5f9;
+    border: 1px solid rgba(0,0,0,.10);
+    }
+
+    .frame .photo{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display:block;
+    }
+
+    .missing{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 14px;
+    text-align:center;
+    color:#64748b;
+    font-weight: 900;
+    font-size: 13px;
+    line-height: 1.25;
+    }
+
+    /* the frame overlay is NOT clipped */
+    .frame .overlay{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(100% + (var(--frameBleed) * 2));
+    height: calc(100% + (var(--frameBleed) * 2));
+    transform: translate(-50%, -50%) scale(var(--frameScale));
+    object-fit: cover;
+    pointer-events:none;
+    user-select:none;
+    z-index: 5;
+    }
+
+    
+    /* .frame{
       position: relative;
       border-radius: 16px;
       overflow: hidden;
@@ -121,7 +180,7 @@
       font-weight: 900;
       font-size: 13px;
       line-height: 1.25;
-    }
+    } */
 
     /* Bottom random carousel (normal section) */
     .random-section{
@@ -328,6 +387,14 @@
     "images/frames/frame2.png",
     "images/frames/frame3.png",
     "images/frames/frame4.png",
+    "images/frames/frame5.png",
+    "images/frames/frame6.png",
+    "images/frames/frame7.png",
+    "images/frames/frame8.png",
+    "images/frames/frame9.png",
+    "images/frames/frame10.png",
+    "images/frames/frame11.png",
+    "images/frames/frame12.png",
   ];
 
   // Image extensions to try
@@ -416,10 +483,14 @@
         </div>
 
         <div class="frame" role="button" tabindex="0" aria-label="Open photo fullscreen">
-          <img class="photo" alt="Pub ${p.n} photo" />
-          <div class="missing">Upload<br><b>photos/pubs/pub${p.n}.jpg</b></div>
-          <img class="overlay" alt="" aria-hidden="true" src="${frameSrc}" />
+            <div class="clip">
+                <img class="photo" alt="Pub ${p.n} photo" />
+                <div class="missing">Upload<br><b>photos/pubs/pub${p.n}.jpg</b></div>
+            </div>
+
+            <img class="overlay" alt="" aria-hidden="true" src="${frameSrc}" />
         </div>
+
       </div>
     `;
   }
